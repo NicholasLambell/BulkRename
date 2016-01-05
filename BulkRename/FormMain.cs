@@ -90,9 +90,17 @@ namespace BulkRename {
             }
         }
 
-        private void btnFilters_Click(object sender, EventArgs e) {
+        private void mnuFilterEdit_Click(object sender, EventArgs e) {
             FormFilters frmFilters = new FormFilters();
             DialogResult result = frmFilters.ShowDialog();
+        }
+
+        private void mnuFilterSave_Click(object sender, EventArgs e) {
+
+        }
+
+        private void mnuFilterLoad_Click(object sender, EventArgs e) {
+
         }
         #endregion
     }
