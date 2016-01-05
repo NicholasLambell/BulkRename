@@ -12,26 +12,33 @@ using System.Windows.Forms;
 namespace BulkRename {
     public partial class FormMain : Form {
         string[] _args;
-        List<FileInfo> _fileDirs;
+        List<FileInfo> _files;
 
         public FormMain() {
             InitializeComponent();
 
             //Initialize files list
-            _fileDirs = new List<FileInfo>();
+            _files = new List<FileInfo>();
 
             //Get command line arguments and process them
             _args = Environment.GetCommandLineArgs();
             ProcessArgs();
+
+            //Write file info to list
+            WriteList();
         }
 
         private void ProcessArgs() {
-            if (_args.Length > 0) {
-                foreach (string arg in _args) {
-                    if (File.Exists(arg)) {
-
-                    }
+            foreach (string arg in _args) {
+                if (File.Exists(arg) && Util.FileName(arg) != Util.FileName(Util.GetExe())) {
+                    _files.Add(new FileInfo(arg));
                 }
+            }
+        }
+
+        private void WriteList() {
+            foreach (FileInfo file in _files) {
+                lstArgs.Items.Add(file.Name);
             }
         }
     }
