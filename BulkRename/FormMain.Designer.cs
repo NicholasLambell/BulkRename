@@ -29,15 +29,19 @@
             this.mnuSelAll = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuDesel = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuInvSel = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnFilters = new System.Windows.Forms.Button();
             this.mnuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // lstFiles
             // 
+            this.lstFiles.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lstFiles.CheckBoxes = true;
-            this.lstFiles.Location = new System.Drawing.Point(12, 27);
+            this.lstFiles.Location = new System.Drawing.Point(12, 52);
             this.lstFiles.Name = "lstFiles";
-            this.lstFiles.Size = new System.Drawing.Size(366, 394);
+            this.lstFiles.Size = new System.Drawing.Size(366, 369);
             this.lstFiles.TabIndex = 0;
             this.lstFiles.UseCompatibleStateImageBehavior = false;
             this.lstFiles.View = System.Windows.Forms.View.Details;
@@ -83,11 +87,22 @@
             this.mnuInvSel.Text = "Invert Selection";
             this.mnuInvSel.Click += new System.EventHandler(this.mnuInvSel_Click);
             // 
+            // btnFilters
+            // 
+            this.btnFilters.Location = new System.Drawing.Point(13, 28);
+            this.btnFilters.Name = "btnFilters";
+            this.btnFilters.Size = new System.Drawing.Size(75, 23);
+            this.btnFilters.TabIndex = 2;
+            this.btnFilters.Text = "Edit Filters";
+            this.btnFilters.UseVisualStyleBackColor = true;
+            this.btnFilters.Click += new System.EventHandler(this.btnFilters_Click);
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(390, 433);
+            this.Controls.Add(this.btnFilters);
             this.Controls.Add(this.lstFiles);
             this.Controls.Add(this.mnuStrip);
             this.MainMenuStrip = this.mnuStrip;
@@ -108,6 +123,7 @@
         private System.Windows.Forms.ToolStripMenuItem mnuSelAll;
         private System.Windows.Forms.ToolStripMenuItem mnuDesel;
         private System.Windows.Forms.ToolStripMenuItem mnuInvSel;
+        private System.Windows.Forms.Button btnFilters;
     }
 }
 

@@ -22,6 +22,7 @@ namespace BulkRename {
 
             //Initialize list view with columns
             lstFiles.Columns.Add("File", -2);
+            lstFiles.Columns.Add("Path", -2);
 
             //Get command line arguments and process them
             _args = Environment.GetCommandLineArgs();
@@ -29,6 +30,8 @@ namespace BulkRename {
 
             //Write file info to list
             WriteList();
+
+            
         }
 
         #region Misc Methods
@@ -42,11 +45,26 @@ namespace BulkRename {
 
         private void WriteList() {
             foreach (FileInfo file in _files) {
+                //Create list view item
                 ListViewItem item = new ListViewItem(file.Name);
                 item.Checked = true;
+
+                //Create list view sub item
+                ListViewItem.ListViewSubItem subItem = new ListViewItem.ListViewSubItem(item, file.DirectoryName);
+                item.SubItems.Add(subItem);
+
+                //Add item to list;
                 lstFiles.Items.Add(item);
-                //lstFiles.Items.Add(file.Name);
+
+                //Refresh column sizes
+                lstFiles.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
+                lstFiles.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
             }
+        }
+
+        private void AddItem(string path) {
+            _files.Add(new FileInfo(path));
+            WriteList();
         }
         #endregion
 
@@ -70,6 +88,11 @@ namespace BulkRename {
             foreach (ListViewItem item in lstFiles.Items) {
                 item.Checked = !item.Checked;
             }
+        }
+
+        private void btnFilters_Click(object sender, EventArgs e) {
+            FormFilters frmFilters = new FormFilters();
+            DialogResult result = frmFilters.ShowDialog();
         }
         #endregion
     }
