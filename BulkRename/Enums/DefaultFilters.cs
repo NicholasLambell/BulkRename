@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace BulkRename {
-    enum DefaultFilters {
+    public enum DefaultFilters {
             ReplacePeriods,
             CapitalizeAll,
             CapitalizeKey
