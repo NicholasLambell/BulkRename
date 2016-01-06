@@ -93,6 +93,11 @@ namespace BulkRename {
         private void mnuFilterEdit_Click(object sender, EventArgs e) {
             FormFilters frmFilters = new FormFilters();
             DialogResult result = frmFilters.ShowDialog();
+
+            if (result == DialogResult.OK) {
+                FilterList filterList = (FilterList)frmFilters.Tag;
+                //do filter stuff
+            }
         }
 
         private void mnuFilterSave_Click(object sender, EventArgs e) {
