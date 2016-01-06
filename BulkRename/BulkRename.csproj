@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataTypes\FilterList.cs" />
     <Compile Include="Enums\DefaultFilters.cs" />
     <Compile Include="Forms\FormFilters.cs">
       <SubType>Form</SubType>
