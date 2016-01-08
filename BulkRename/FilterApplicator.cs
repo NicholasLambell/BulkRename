@@ -8,38 +8,52 @@ namespace BulkRename {
     class FilterApplicator {
         #region Default Filters
         public static string ReplacePeriods(string fileName) {
-            return fileName.Replace(".", " ");
+            if (!String.IsNullOrEmpty(fileName)) {
+                return fileName.Replace(".", " ");
+            }
+            return fileName;
         }
 
         public static string CapitalizeAll(string fileName) {
-            //Split name into individual words
-            string[] words = Util.SplitWords(fileName);
+            if (!String.IsNullOrEmpty(fileName)) {
+                //Split name into individual words
+                string[] words = Util.SplitWords(fileName);
 
-            //Cycle through words and capitalize all words
-            for (int i = 0; i < words.Length; i++) {
+                //Cycle through words and capitalize all words
+                for (int i = 0; i < words.Length; i++) {
+                    words[i] = Util.Capitalize(words[i]);
+                }
 
+                //Return formatted string
+                return String.Join(" ", words);
             }
-
-            return null;
+            return fileName;
         }
 
         public static string CapitalizeKey(string fileName) {
-            string[] noCap = { "a", "an", "the", "and", "but", "or", "nor", "at", "by", "for", "from", "in", "into", "of", "off", "on", "up", "with", "to", "as", "o,Clock" };
+            if (!String.IsNullOrEmpty(fileName)) {
+                string[] noCap = { "a", "an", "the", "and", "but", "or", "nor", "at", "by", "for", "from", "in", "into", "of", "off", "on", "up", "with", "to", "as", "o,Clock" };
 
-            //Split name into individual words
-            string[] words = Util.SplitWords(fileName);
+                //Split name into individual words
+                string[] words = Util.SplitWords(fileName);
 
-            //Cycle through words and capitalize all key words
-            for (int i = 0; i < words.Length; i++) {
+                //Capitalize first and last word
 
+
+                //Cycle through words and capitalize all key words
+                for (int i = 1; i < words.Length - 1; i++) {
+
+                }
             }
-
-            return null;
+            return fileName;
         }
         #endregion
 
         public static string CustomFilter(string fileName, string filterIn, string filterOut) {
-            return fileName.Replace(filterIn, filterOut);
+            if (String.IsNullOrEmpty(fileName)) {
+                return fileName.Replace(filterIn, filterOut);
+            }
+            return fileName;
         }
     }
 }
