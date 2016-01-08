@@ -48,6 +48,9 @@
   <ItemGroup>
     <Compile Include="DataTypes\FilterList.cs" />
     <Compile Include="Enums\DefaultFilters.cs" />
+    <Compile Include="FileHandlers\FileHandler.cs" />
+    <Compile Include="FileHandlers\FilterFileHandler.cs" />
+    <Compile Include="FilterHandler.cs" />
     <Compile Include="Forms\FormFilters.cs">
       <SubType>Form</SubType>
     </Compile>
