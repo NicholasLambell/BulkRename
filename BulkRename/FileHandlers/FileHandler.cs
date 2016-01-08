@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BulkRename {
     class FileHandler {
-        public bool Rename(string filePath, string desName) {
+        public static bool Rename(string filePath, string desName) {
             return false;
         }
     }
