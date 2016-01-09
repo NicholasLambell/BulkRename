@@ -37,12 +37,21 @@ namespace BulkRename {
                 //Split name into individual words
                 string[] words = Util.SplitWords(fileName);
 
-                //Capitalize first and last word
+                if (words.Length > 0) {
+                    int last = words.Length - 1;
 
+                    //Capitalize first and last word
+                    words[0] = Util.Capitalize(words[0]);
+                    words[last] = Util.Capitalize(words[last]);
 
-                //Cycle through words and capitalize all key words
-                for (int i = 1; i < words.Length - 1; i++) {
-
+                    //Cycle through words and capitalize all key words
+                    for (int i = 1; i < words.Length - 1; i++) {
+                        if (words[i].Length >= 5) {
+                            words[i] = Util.Capitalize(words[i]);
+                        } else if (!noCap.Contains(words[i])) {
+                            words[i] = Util.Capitalize(words[i]);
+                        }
+                    }
                 }
             }
             return fileName;
