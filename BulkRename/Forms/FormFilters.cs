@@ -36,6 +36,11 @@ namespace BulkRename {
             //Set form tag to filter list container object
             this.Tag = new FilterList(defaultFilters, customFilters);
 
+            //If both lists are empty set tag to null
+            if (defaultFilters.Count == 0 && customFilters.Count == 0) {
+                this.Tag = null;
+            }
+
             //Set dialog result to return to main form
             this.DialogResult = DialogResult.OK;
 
