@@ -13,6 +13,7 @@ namespace BulkRename {
     public partial class FormMain : Form {
         string[] _args;
         List<FileInfo> _files;
+        FilterList _filterList;
 
         public FormMain() {
             InitializeComponent();
@@ -44,6 +45,9 @@ namespace BulkRename {
         }
 
         private void WriteList() {
+            //Clear existing items
+            lstFiles.Items.Clear();
+
             foreach (FileInfo file in _files) {
                 //Create list view item
                 ListViewItem item = new ListViewItem(file.Name);
@@ -63,15 +67,50 @@ namespace BulkRename {
         }
 
         private void AddItem(string path) {
-            _files.Add(new FileInfo(path));
-            WriteList();
+            if (!String.IsNullOrEmpty(path) && File.Exists(path)) {
+                _files.Add(new FileInfo(path));
+                WriteList();
+            }
         }
         #endregion
 
         #region GUI Event Handlers
-        //==================//
-        //GUI Event Handlers//
-        //==================//
+        private void btnApply_Click(object sender, EventArgs e) {
+            if (_filterList != null) {
+                if (_files.Count > 0) {
+                    List<FileInfo> fileList = new List<FileInfo>();
+
+                    //Add all checked items to file list
+                    for (int i = 0; i < lstFiles.Items.Count; i++) {
+                        if (lstFiles.Items[i].Checked) {
+                            fileList.Add(_files[i]);
+                        }
+                    }
+
+                    FilterHandler.ProcessFilters(_filterList, fileList);
+                } else {
+                    MessageBox.Show("Please select at least one file before applying filters", "Error!");
+                }
+            } else {
+                MessageBox.Show("Please use the filters edit dialog to select filters first.", "Error!");
+            }
+        }
+
+        private void lstFiles_DragDrop(object sender, DragEventArgs e) {
+
+        }
+
+        private void lstFiles_KeyDown(object sender, KeyEventArgs e) {
+            if (e.KeyCode == Keys.Delete) {
+                foreach (ListViewItem item in lstFiles.Items) {
+                    if (item.Selected) {
+                        item.Remove();
+                    }
+                }
+            }
+        }
+
+        #region menu strip
         private void mnuSelAll_Click(object sender, EventArgs e) {
             foreach (ListViewItem item in lstFiles.Items) {
                 item.Checked = true;
@@ -96,7 +135,26 @@ namespace BulkRename {
 
             if (result == DialogResult.OK) {
                 FilterList filterList = (FilterList)frmFilters.Tag;
-                //do filter stuff
+
+                if (filterList != null) {
+                    _filterList = filterList;
+                }
+            }
+        }
+
+        private void mnuFileOpen_Click(object sender, EventArgs e) {
+            OpenFileDialog fileDialog = new OpenFileDialog();
+
+            fileDialog.Filter = "All Files (*.*)|*.*";
+            fileDialog.FilterIndex = 1;
+            fileDialog.Multiselect = true;
+
+            DialogResult result = fileDialog.ShowDialog();
+
+            if (result == DialogResult.OK) {
+                foreach (string fileName in fileDialog.FileNames) {
+                    AddItem(fileName);
+                }
             }
         }
 
@@ -107,6 +165,7 @@ namespace BulkRename {
         private void mnuFilterLoad_Click(object sender, EventArgs e) {
 
         }
+        #endregion
         #endregion
     }
 }

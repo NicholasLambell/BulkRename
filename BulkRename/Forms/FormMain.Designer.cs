@@ -33,6 +33,9 @@
             this.mnuFilterEdit = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuFilterSave = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuFilterLoad = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnApply = new System.Windows.Forms.Button();
+            this.mnuFile = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuFileOpen = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -42,16 +45,19 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lstFiles.CheckBoxes = true;
-            this.lstFiles.Location = new System.Drawing.Point(12, 52);
+            this.lstFiles.Location = new System.Drawing.Point(12, 27);
             this.lstFiles.Name = "lstFiles";
             this.lstFiles.Size = new System.Drawing.Size(366, 369);
             this.lstFiles.TabIndex = 0;
             this.lstFiles.UseCompatibleStateImageBehavior = false;
             this.lstFiles.View = System.Windows.Forms.View.Details;
+            this.lstFiles.DragDrop += new System.Windows.Forms.DragEventHandler(this.lstFiles_DragDrop);
+            this.lstFiles.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lstFiles_KeyDown);
             // 
             // mnuStrip
             // 
             this.mnuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mnuFile,
             this.mnuSelect,
             this.mnuFilter});
             this.mnuStrip.Location = new System.Drawing.Point(0, 0);
@@ -104,32 +110,61 @@
             // mnuFilterEdit
             // 
             this.mnuFilterEdit.Name = "mnuFilterEdit";
-            this.mnuFilterEdit.Size = new System.Drawing.Size(152, 22);
+            this.mnuFilterEdit.Size = new System.Drawing.Size(100, 22);
             this.mnuFilterEdit.Text = "Edit";
             this.mnuFilterEdit.Click += new System.EventHandler(this.mnuFilterEdit_Click);
             // 
             // mnuFilterSave
             // 
             this.mnuFilterSave.Name = "mnuFilterSave";
-            this.mnuFilterSave.Size = new System.Drawing.Size(152, 22);
+            this.mnuFilterSave.Size = new System.Drawing.Size(100, 22);
             this.mnuFilterSave.Text = "Save";
             this.mnuFilterSave.Click += new System.EventHandler(this.mnuFilterSave_Click);
             // 
             // mnuFilterLoad
             // 
             this.mnuFilterLoad.Name = "mnuFilterLoad";
-            this.mnuFilterLoad.Size = new System.Drawing.Size(152, 22);
+            this.mnuFilterLoad.Size = new System.Drawing.Size(100, 22);
             this.mnuFilterLoad.Text = "Load";
             this.mnuFilterLoad.Click += new System.EventHandler(this.mnuFilterLoad_Click);
+            // 
+            // btnApply
+            // 
+            this.btnApply.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnApply.Location = new System.Drawing.Point(12, 403);
+            this.btnApply.Name = "btnApply";
+            this.btnApply.Size = new System.Drawing.Size(366, 23);
+            this.btnApply.TabIndex = 2;
+            this.btnApply.Text = "Apply Filters";
+            this.btnApply.UseVisualStyleBackColor = true;
+            this.btnApply.Click += new System.EventHandler(this.btnApply_Click);
+            // 
+            // mnuFile
+            // 
+            this.mnuFile.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mnuFileOpen});
+            this.mnuFile.Name = "mnuFile";
+            this.mnuFile.Size = new System.Drawing.Size(37, 20);
+            this.mnuFile.Text = "File";
+            // 
+            // mnuFileOpen
+            // 
+            this.mnuFileOpen.Name = "mnuFileOpen";
+            this.mnuFileOpen.Size = new System.Drawing.Size(152, 22);
+            this.mnuFileOpen.Text = "Open";
+            this.mnuFileOpen.Click += new System.EventHandler(this.mnuFileOpen_Click);
             // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(390, 433);
+            this.Controls.Add(this.btnApply);
             this.Controls.Add(this.lstFiles);
             this.Controls.Add(this.mnuStrip);
             this.MainMenuStrip = this.mnuStrip;
+            this.MinimumSize = new System.Drawing.Size(406, 472);
             this.Name = "FormMain";
             this.Text = "Bulk Rename Utility";
             this.mnuStrip.ResumeLayout(false);
@@ -151,6 +186,9 @@
         private System.Windows.Forms.ToolStripMenuItem mnuFilterEdit;
         private System.Windows.Forms.ToolStripMenuItem mnuFilterSave;
         private System.Windows.Forms.ToolStripMenuItem mnuFilterLoad;
+        private System.Windows.Forms.Button btnApply;
+        private System.Windows.Forms.ToolStripMenuItem mnuFile;
+        private System.Windows.Forms.ToolStripMenuItem mnuFileOpen;
     }
 }
 
