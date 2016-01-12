@@ -104,10 +104,12 @@ namespace BulkRename {
             if (e.KeyCode == Keys.Delete) {
                 foreach (ListViewItem item in lstFiles.Items) {
                     if (item.Selected) {
-                        item.Remove();
+                        _files.RemoveAt(item.Index);
+                        //item.Remove();
                     }
                 }
             }
+            WriteList();
         }
 
         #region menu strip
@@ -130,7 +132,7 @@ namespace BulkRename {
         }
 
         private void mnuFilterEdit_Click(object sender, EventArgs e) {
-            FormFilters frmFilters = new FormFilters();
+            FormFilters frmFilters = new FormFilters(_filterList);
             DialogResult result = frmFilters.ShowDialog();
 
             if (result == DialogResult.OK) {
