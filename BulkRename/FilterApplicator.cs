@@ -16,16 +16,17 @@ namespace BulkRename {
 
         public static string CapitalizeAll(string fileName) {
             if (!String.IsNullOrEmpty(fileName)) {
-                //Split name into individual words
-                string[] words = Util.SplitWords(fileName);
+                ////Split name into individual words
+                //string[] words = Util.SplitWords(fileName);
 
-                //Cycle through words and capitalize all words
-                for (int i = 0; i < words.Length; i++) {
-                    words[i] = Util.Capitalize(words[i]);
-                }
+                ////Cycle through words and capitalize all words
+                //for (int i = 0; i < words.Length; i++) {
+                //    words[i] = Util.Capitalize(words[i]);
+                //}
 
-                //Return formatted string
-                return String.Join(" ", words);
+                ////Return formatted string
+                //return String.Join(" ", words);
+                return Util.Capitalize(fileName);
             }
             return fileName;
         }
