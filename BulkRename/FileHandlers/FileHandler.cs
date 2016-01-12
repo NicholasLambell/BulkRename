@@ -15,14 +15,17 @@ namespace BulkRename {
                     string sIteration = "";
 
                     //Check to make sure file doesn't already exist with that name and auto incriment number if it does
-                    while (File.Exists(file.Directory.FullName + @"\" + rename + sIteration + file.Extension)) {
-                        sIteration = String.Format(" ({0})", iteration);
-                        iteration++;
-                    }
+                    //while (File.Exists(file.Directory.FullName + @"\" + rename + sIteration + file.Extension)) {
+                    //    sIteration = String.Format(" ({0})", iteration);
+                    //    iteration++;
+                    //}
                     rename += sIteration;
 
                     file.MoveTo(file.Directory.FullName + @"\" + rename + file.Extension);
                     return true;
+
+                } catch (IOException ex) {
+                    ErrorHandler.LogError(ex.GetType().ToString(), true);
 
                 } catch (Exception ex) {
                     ErrorHandler.LogError(ex.GetType() + ": " + ex.Message, true);
