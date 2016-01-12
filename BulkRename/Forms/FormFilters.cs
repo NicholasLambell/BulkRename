@@ -10,8 +10,32 @@ using System.Windows.Forms;
 
 namespace BulkRename {
     public partial class FormFilters : Form {
-        public FormFilters() {
+        public FormFilters(FilterList filterList) {
             InitializeComponent();
+
+            SetFilters(filterList);
+        }
+
+        private void SetFilters(FilterList filterList) {
+            if (filterList != null) {
+                //Set default filters
+                foreach (DefaultFilters filter in filterList.defaultFilters) {
+                    chklstComFilters.SetItemChecked((int)filter, true);
+                }
+
+                //Set custom filters
+                foreach (string[] filter in filterList.customFilters) {
+                    gvFilters.Rows.Add(filter[0], filter[1]);
+
+                    //DataGridViewRow row = new DataGridViewRow();
+                    ////row.Cells.;
+
+                    //row.Cells[0].Value = filter[0];
+                    //row.Cells[1].Value = filter[1];
+
+                    //gvFilters.Rows.Add(row);
+                }
+            }
         }
 
         private void btnOk_Click(object sender, EventArgs e) {
@@ -29,7 +53,10 @@ namespace BulkRename {
 
             foreach (DataGridViewRow row in gvFilters.Rows) {
                 if (row.Index < gvFilters.Rows.Count - 1) {
-                    customFilters.Add(new string[] { row.Cells[0].Value.ToString(), row.Cells[1].Value.ToString() });
+                    string cell0 = (row.Cells[0].Value != null) ? row.Cells[0].Value.ToString() : "";
+                    string cell1 = (row.Cells[1].Value != null) ? row.Cells[1].Value.ToString() : "";
+
+                    customFilters.Add(new string[] { cell0, cell1 });
                 }
             }
 
