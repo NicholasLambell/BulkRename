@@ -36,5 +36,12 @@ namespace BulkRename {
             }
             return input;
         }
+
+        public static string MakeStringList(List<string> input) {
+            if (input != null && input.Count > 0) {
+                return String.Join("\n", input);
+            }
+            return null;
+        }
     }
 }
