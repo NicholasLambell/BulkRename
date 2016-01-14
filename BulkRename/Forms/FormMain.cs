@@ -73,20 +73,48 @@ namespace BulkRename {
             lstFiles.Sort();
         }
 
+        private bool AddToList(FileInfo file) {
+            if (_files.FindIndex(item => item.FullName == file.FullName) < 0) {
+                _files.Add(file);
+                return true;
+            }
+            return false;
+        }
+
         private void AddItem(string path) {
             if (!String.IsNullOrEmpty(path) && File.Exists(path)) {
-                _files.Add(new FileInfo(path));
+                //_files.Add(new FileInfo(path));
+                if (!AddToList(new FileInfo(path))) {
+                    ErrorHandler.LogError("Failed to add file (is it already in the list?):\n" + path, true);
+                    return;
+                }
                 WriteList();
             }
         }
 
         private void AddItems(List<string> paths) {
             if (paths != null && paths.Count > 0) {
+                List<string> failPaths = new List<string>();
+
+                //Add files to list and handle error returns
                 foreach (string path in paths) {
                     if (!String.IsNullOrEmpty(path) && File.Exists(path)) {
-                        _files.Add(new FileInfo(path));
+                        //_files.Add(new FileInfo(path));
+                        if (!AddToList(new FileInfo(path))) {
+                            failPaths.Add(path);
+                        }
                     }
                 }
+
+                //Generate error message
+                if (failPaths.Count > 0) {
+                    ErrorHandler.LogError("Failed to add files (are they already in the list?):\n" + Util.MakeStringList(failPaths), true);
+
+                    if (failPaths.Count == paths.Count) {
+                        return;
+                    }
+                }
+
                 WriteList();
             }
         }
@@ -131,8 +159,8 @@ namespace BulkRename {
             if (e.KeyCode == Keys.Delete) {
                 foreach (ListViewItem item in lstFiles.Items) {
                     if (item.Selected) {
-                        //_files.RemoveAt(item.Index);
-                        //item.Remove();
+                        _files.RemoveAt(item.Index);
+                        item.Remove();
                     }
                 }
             }
