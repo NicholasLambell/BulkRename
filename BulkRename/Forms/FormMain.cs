@@ -11,15 +11,20 @@ using System.Windows.Forms;
 
 namespace BulkRename {
     public partial class FormMain : Form {
-        string[] _args;
-        List<FileInfo> _files;
-        FilterList _filterList;
+        private string[] _args;
+        private List<FileInfo> _files;
+        private FilterList _filterList;
+        private ListViewColumnSorter lstSorter;
+
 
         public FormMain() {
             InitializeComponent();
 
             //Initialize files list
             _files = new List<FileInfo>();
+
+            lstSorter = new ListViewColumnSorter();
+            lstFiles.ListViewItemSorter = lstSorter;
 
             //Initialize list view with columns
             lstFiles.Columns.Add("File", -2);
@@ -28,11 +33,6 @@ namespace BulkRename {
             //Get command line arguments and process them
             _args = Environment.GetCommandLineArgs();
             ProcessArgs();
-
-            //Write file info to list
-            WriteList();
-
-            
         }
 
         #region Misc Methods
@@ -42,6 +42,8 @@ namespace BulkRename {
                     _files.Add(new FileInfo(arg));
                 }
             }
+            //Refresh list view
+            WriteList();
         }
 
         private void WriteList() {
@@ -59,16 +61,32 @@ namespace BulkRename {
 
                 //Add item to list;
                 lstFiles.Items.Add(item);
-
-                //Refresh column sizes
-                lstFiles.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
-                lstFiles.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
             }
+
+            //Refresh column sizes
+            lstFiles.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
+            lstFiles.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize);
+
+            //Sort items by file name column
+            lstSorter.SortColumn = 0;
+            lstSorter.Order = SortOrder.Ascending;
+            lstFiles.Sort();
         }
 
         private void AddItem(string path) {
             if (!String.IsNullOrEmpty(path) && File.Exists(path)) {
                 _files.Add(new FileInfo(path));
+                WriteList();
+            }
+        }
+
+        private void AddItems(List<string> paths) {
+            if (paths != null && paths.Count > 0) {
+                foreach (string path in paths) {
+                    if (!String.IsNullOrEmpty(path) && File.Exists(path)) {
+                        _files.Add(new FileInfo(path));
+                    }
+                }
                 WriteList();
             }
         }
@@ -96,22 +114,31 @@ namespace BulkRename {
             }
         }
 
+        #region list box
         private void lstFiles_DragDrop(object sender, DragEventArgs e) {
+            //Get collection of files dropped to list
+            string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
 
+            //Add files to file list
+            AddItems(new List<string>(files));
+        }
+
+        private void lstFiles_DragEnter(object sender, DragEventArgs e) {
+            e.Effect = DragDropEffects.Copy;
         }
 
         private void lstFiles_KeyDown(object sender, KeyEventArgs e) {
             if (e.KeyCode == Keys.Delete) {
                 foreach (ListViewItem item in lstFiles.Items) {
                     if (item.Selected) {
-                        _files.RemoveAt(item.Index);
+                        //_files.RemoveAt(item.Index);
                         //item.Remove();
                     }
                 }
             }
             WriteList();
         }
-
+        #endregion
         #region menu strip
         private void mnuSelAll_Click(object sender, EventArgs e) {
             foreach (ListViewItem item in lstFiles.Items) {
@@ -154,9 +181,7 @@ namespace BulkRename {
             DialogResult result = fileDialog.ShowDialog();
 
             if (result == DialogResult.OK) {
-                foreach (string fileName in fileDialog.FileNames) {
-                    AddItem(fileName);
-                }
+                AddItems(new List<string>(fileDialog.FileNames));
             }
         }
 
