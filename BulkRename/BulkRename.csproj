@@ -68,7 +68,8 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Util.cs" />
+    <Compile Include="Utility\ListViewColumnSorter.cs" />
+    <Compile Include="Utility\Util.cs" />
     <EmbeddedResource Include="Forms\FormFilters.resx">
       <DependentUpon>FormFilters.cs</DependentUpon>
     </EmbeddedResource>
