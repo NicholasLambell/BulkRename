@@ -15,7 +15,7 @@ namespace BulkRename {
         }
 
         public static string FileName(string input) {
-            if (!String.IsNullOrEmpty(input) && File.Exists(input)) {
+            if (!String.IsNullOrEmpty(input)) {
                 string output = Path.GetFileNameWithoutExtension(new FileInfo(input).Name);
                 return System.Diagnostics.Debugger.IsAttached ? output.Replace(".vshost", "") : output;
             }
