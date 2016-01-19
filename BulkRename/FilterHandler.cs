@@ -12,8 +12,8 @@ namespace BulkRename {
         public static void ProcessFilters(FilterList filterList, List<FileInfo> files) {
             //Initialize list of file names
             _renameFiles = new List<string>();
-            foreach (FileInfo info in files) {
-                _renameFiles.Add(Util.FileName(info.Name));
+            foreach (FileInfo file in files) {
+                _renameFiles.Add(Util.FileName(file.Name));
             }
 
             //Run filter processors
@@ -24,7 +24,9 @@ namespace BulkRename {
             if (files.Count == _renameFiles.Count) {
                 for (int i = 0; i < files.Count; i++) {
                     if (Util.FileName(files[i].Name) != _renameFiles[i]) {
-                        FileHandler.Rename(files[i].FullName, _renameFiles[i]);
+                        FileHandler.Rename(files[i], _renameFiles[i]);
+                        //FileHandler.Rename(files[i].FullName, _renameFiles[i]);
+                        //files[i].MoveTo(files[i].Directory.FullName + @"\" + _renameFiles[i]);
                     }
                 }
             } else {
