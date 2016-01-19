@@ -60,7 +60,7 @@ namespace BulkRename {
         #endregion
 
         public static string CustomFilter(string fileName, string filterIn, string filterOut) {
-            if (String.IsNullOrEmpty(fileName)) {
+            if (!String.IsNullOrEmpty(fileName)) {
                 return fileName.Replace(filterIn, filterOut);
             }
             return fileName;
