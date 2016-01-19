@@ -83,7 +83,6 @@ namespace BulkRename {
 
         private void AddItem(string path) {
             if (!String.IsNullOrEmpty(path) && File.Exists(path)) {
-                //_files.Add(new FileInfo(path));
                 if (!AddToList(new FileInfo(path))) {
                     ErrorHandler.LogError("Failed to add file (is it already in the list?):\n" + path, true);
                     return;
@@ -99,7 +98,6 @@ namespace BulkRename {
                 //Add files to list and handle error returns
                 foreach (string path in paths) {
                     if (!String.IsNullOrEmpty(path) && File.Exists(path)) {
-                        //_files.Add(new FileInfo(path));
                         if (!AddToList(new FileInfo(path))) {
                             failPaths.Add(path);
                         }
@@ -118,6 +116,21 @@ namespace BulkRename {
                 WriteList();
             }
         }
+
+        private void RefreshItems() {
+            if (_files != null && _files.Count > 0) {
+                foreach (FileInfo file in _files) {
+                    file.Refresh();
+                }
+                WriteList();
+            }
+        }
+
+        private void ClearFilters() {
+            if (MessageBox.Show("Are you sure you want to clear the filters?", "Clear Filters", MessageBoxButtons.YesNo) == DialogResult.Yes) {
+                _filterList = new FilterList(new List<DefaultFilters>(), new List<string[]>());
+            }
+        }
         #endregion
 
         #region GUI Event Handlers
@@ -134,6 +147,10 @@ namespace BulkRename {
                     }
 
                     FilterHandler.ProcessFilters(_filterList, fileList);
+                    //
+                    //Make So File Names Are Updated. Try using built in MoveTo method then Refresh
+                    //
+                    RefreshItems();
                 } else {
                     MessageBox.Show("Please select at least one file before applying filters", "Error!");
                 }
@@ -168,6 +185,20 @@ namespace BulkRename {
         }
         #endregion
         #region menu strip
+        private void mnuFileOpen_Click(object sender, EventArgs e) {
+            OpenFileDialog fileDialog = new OpenFileDialog();
+
+            fileDialog.Filter = "All Files (*.*)|*.*";
+            fileDialog.FilterIndex = 1;
+            fileDialog.Multiselect = true;
+
+            DialogResult result = fileDialog.ShowDialog();
+
+            if (result == DialogResult.OK) {
+                AddItems(new List<string>(fileDialog.FileNames));
+            }
+        }
+
         private void mnuSelAll_Click(object sender, EventArgs e) {
             foreach (ListViewItem item in lstFiles.Items) {
                 item.Checked = true;
@@ -199,18 +230,8 @@ namespace BulkRename {
             }
         }
 
-        private void mnuFileOpen_Click(object sender, EventArgs e) {
-            OpenFileDialog fileDialog = new OpenFileDialog();
-
-            fileDialog.Filter = "All Files (*.*)|*.*";
-            fileDialog.FilterIndex = 1;
-            fileDialog.Multiselect = true;
-
-            DialogResult result = fileDialog.ShowDialog();
-
-            if (result == DialogResult.OK) {
-                AddItems(new List<string>(fileDialog.FileNames));
-            }
+        private void mnuFilterClear_Click(object sender, EventArgs e) {
+            ClearFilters();
         }
 
         private void mnuFilterSave_Click(object sender, EventArgs e) {
@@ -218,7 +239,8 @@ namespace BulkRename {
         }
 
         private void mnuFilterLoad_Click(object sender, EventArgs e) {
-
+            //If filter list is already populated display dialog asking if the user would like to
+            //clear the list and load fresh or load in addition to the existing filters
         }
         #endregion
         #endregion
