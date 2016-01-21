@@ -230,42 +230,7 @@ namespace BulkRename {
 
         private void mnuFilterSave_Click(object sender, EventArgs e) {
             if (_filterList != null) {
-                //Show file dialog
-                SaveFileDialog fileDialog = new SaveFileDialog();
-                fileDialog.InitialDirectory = Util.GetPath();
-                fileDialog.FileName = "Filters";
-                fileDialog.DefaultExt = "xml";
-                fileDialog.Filter = "XML Files (*.xml)|*.xml";
-                fileDialog.FilterIndex = 0;
-
-                if (fileDialog.ShowDialog() == DialogResult.OK) {
-                    XElement filterList = new XElement("FilterList");
-
-                    //Process Default Filters
-                    if (_filterList.defaultFilters.Count > 0) {
-                        XElement defaultFilters = new XElement("DefaultFilters");
-                        foreach (DefaultFilters filter in _filterList.defaultFilters) {
-                            defaultFilters.Add(new XElement("DFilter", (int)filter));
-                        }
-                        filterList.Add(defaultFilters);
-                    }
-
-                    //Process Custom Filters
-                    if (_filterList.customFilters.Count > 0) {
-                        XElement customFilters = new XElement("CustomFilters");
-                        foreach (string[] filter in _filterList.customFilters) {
-                            customFilters.Add(new XElement("CFilter",
-                                new XElement("Input", filter[0]),
-                                new XElement("Output", filter[1])
-                            ));
-                        }
-                        filterList.Add(customFilters);
-                    }
-
-                    //Save document
-                    XDocument document = new XDocument(filterList);
-                    document.Save(fileDialog.FileName);
-                }
+                FilterFileHandler.Save(_filterList);
             } else {
                 ErrorHandler.LogError("No filters selected. Please select some before trying to save", true);
             }
@@ -273,7 +238,31 @@ namespace BulkRename {
 
         private void mnuFilterLoad_Click(object sender, EventArgs e) {
             //If filter list is already populated display dialog asking if the user would like to
-            //clear the list and load fresh or load in addition to the existing filters
+            //clear the list and load fresh or load in addition to the existing filters;
+            OpenFileDialog fileDialog = new OpenFileDialog();
+            fileDialog.Filter = "XML Files (*.xml)|*.xml";
+            fileDialog.FilterIndex = 1;
+
+            if (fileDialog.ShowDialog() == DialogResult.OK) {
+                FilterList loadFilters = FilterFileHandler.Load(fileDialog.FileName);
+
+                if (_filterList != null) {
+                    MessageBoxManager.Yes = "Merge";
+                    MessageBoxManager.No = "Override";
+                    MessageBoxManager.Register();
+                    DialogResult result = MessageBox.Show("Existing filters detected. Would you like to merge the new and existing filters or override them?",
+                        "Filter Options", MessageBoxButtons.YesNoCancel);
+                    MessageBoxManager.Unregister();
+
+                    if (result == DialogResult.Yes) {
+                        _filterList.Merge(loadFilters);
+                    } else if (result == DialogResult.No) {
+                        _filterList = loadFilters;
+                    }
+                } else {
+                    _filterList = loadFilters;
+                }
+            }
         }
         #endregion
         #endregion
