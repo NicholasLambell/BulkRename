@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml.Linq;
 
 namespace BulkRename {
     public partial class FormMain : Form {
@@ -128,7 +129,7 @@ namespace BulkRename {
 
         private void ClearFilters() {
             if (MessageBox.Show("Are you sure you want to clear the filters?", "Clear Filters", MessageBoxButtons.YesNo) == DialogResult.Yes) {
-                _filterList = new FilterList(new List<DefaultFilters>(), new List<string[]>());
+                _filterList = null;
             }
         }
         #endregion
@@ -192,9 +193,7 @@ namespace BulkRename {
             fileDialog.FilterIndex = 1;
             fileDialog.Multiselect = true;
 
-            DialogResult result = fileDialog.ShowDialog();
-
-            if (result == DialogResult.OK) {
+            if (fileDialog.ShowDialog() == DialogResult.OK) {
                 AddItems(new List<string>(fileDialog.FileNames));
             }
         }
@@ -219,7 +218,7 @@ namespace BulkRename {
 
         private void mnuFilterEdit_Click(object sender, EventArgs e) {
             FormFilters frmFilters = new FormFilters(_filterList);
-            
+
             if (frmFilters.ShowDialog() == DialogResult.OK) {
                 _filterList = (FilterList)frmFilters.Tag;
             }
@@ -230,7 +229,46 @@ namespace BulkRename {
         }
 
         private void mnuFilterSave_Click(object sender, EventArgs e) {
-            
+            if (_filterList != null) {
+                //Show file dialog
+                SaveFileDialog fileDialog = new SaveFileDialog();
+                fileDialog.InitialDirectory = Util.GetPath();
+                fileDialog.FileName = "Filters";
+                fileDialog.DefaultExt = "xml";
+                fileDialog.Filter = "XML Files (*.xml)|*.xml";
+                fileDialog.FilterIndex = 0;
+
+                if (fileDialog.ShowDialog() == DialogResult.OK) {
+                    XElement filterList = new XElement("FilterList");
+
+                    //Process Default Filters
+                    if (_filterList.defaultFilters.Count > 0) {
+                        XElement defaultFilters = new XElement("DefaultFilters");
+                        foreach (DefaultFilters filter in _filterList.defaultFilters) {
+                            defaultFilters.Add(new XElement("DFilter", (int)filter));
+                        }
+                        filterList.Add(defaultFilters);
+                    }
+
+                    //Process Custom Filters
+                    if (_filterList.customFilters.Count > 0) {
+                        XElement customFilters = new XElement("CustomFilters");
+                        foreach (string[] filter in _filterList.customFilters) {
+                            customFilters.Add(new XElement("CFilter",
+                                new XElement("Input", filter[0]),
+                                new XElement("Output", filter[1])
+                            ));
+                        }
+                        filterList.Add(customFilters);
+                    }
+
+                    //Save document
+                    XDocument document = new XDocument(filterList);
+                    document.Save(fileDialog.FileName);
+                }
+            } else {
+                ErrorHandler.LogError("No filters selected. Please select some before trying to save", true);
+            }
         }
 
         private void mnuFilterLoad_Click(object sender, EventArgs e) {
