@@ -26,14 +26,6 @@ namespace BulkRename {
                 //Set custom filters
                 foreach (string[] filter in filterList.customFilters) {
                     gvFilters.Rows.Add(filter[0], filter[1]);
-
-                    //DataGridViewRow row = new DataGridViewRow();
-                    ////row.Cells.;
-
-                    //row.Cells[0].Value = filter[0];
-                    //row.Cells[1].Value = filter[1];
-
-                    //gvFilters.Rows.Add(row);
                 }
             }
         }
@@ -70,23 +62,6 @@ namespace BulkRename {
 
             //Set dialog result to return to main form
             this.DialogResult = DialogResult.OK;
-
-
-
-            //FilterList filterList = new FilterList(defaultFilters, customFilters);
-            //string message = "Default Filters:\n";
-
-            //foreach (DefaultFilters filter in filterList.defaultFilters) {
-            //    message += filter.ToString() + "\n";
-            //}
-
-            //message += "\n\nCustom Filters:\n";
-
-            //foreach (string[] filter in filterList.customFilters) {
-            //    message += filter[0] + " > " + filter[1] + "\n";
-            //}
-
-            //MessageBox.Show(message);
         }
 
         private void btnCancel_Click(object sender, EventArgs e) {
