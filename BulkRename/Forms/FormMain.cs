@@ -219,14 +219,9 @@ namespace BulkRename {
 
         private void mnuFilterEdit_Click(object sender, EventArgs e) {
             FormFilters frmFilters = new FormFilters(_filterList);
-            DialogResult result = frmFilters.ShowDialog();
-
-            if (result == DialogResult.OK) {
-                FilterList filterList = (FilterList)frmFilters.Tag;
-
-                if (filterList != null) {
-                    _filterList = filterList;
-                }
+            
+            if (frmFilters.ShowDialog() == DialogResult.OK) {
+                _filterList = (FilterList)frmFilters.Tag;
             }
         }
 
@@ -235,7 +230,7 @@ namespace BulkRename {
         }
 
         private void mnuFilterSave_Click(object sender, EventArgs e) {
-
+            
         }
 
         private void mnuFilterLoad_Click(object sender, EventArgs e) {
