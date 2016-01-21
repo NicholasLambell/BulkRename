@@ -25,8 +25,6 @@ namespace BulkRename {
                 for (int i = 0; i < files.Count; i++) {
                     if (Util.FileName(files[i].Name) != _renameFiles[i]) {
                         FileHandler.Rename(files[i], _renameFiles[i]);
-                        //FileHandler.Rename(files[i].FullName, _renameFiles[i]);
-                        //files[i].MoveTo(files[i].Directory.FullName + @"\" + _renameFiles[i]);
                     }
                 }
             } else {
