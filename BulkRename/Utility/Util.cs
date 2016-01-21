@@ -10,6 +10,10 @@ using System.Threading.Tasks;
 namespace BulkRename {
     class Util {
         #region File Related Methods
+        public static string GetPath() {
+            return AppDomain.CurrentDomain.BaseDirectory;
+        }
+
         public static string GetExe() {
             return System.Reflection.Assembly.GetExecutingAssembly().Location;
         }
