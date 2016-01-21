@@ -16,16 +16,6 @@ namespace BulkRename {
 
         public static string CapitalizeAll(string fileName) {
             if (!String.IsNullOrEmpty(fileName)) {
-                ////Split name into individual words
-                //string[] words = Util.SplitWords(fileName);
-
-                ////Cycle through words and capitalize all words
-                //for (int i = 0; i < words.Length; i++) {
-                //    words[i] = Util.Capitalize(words[i]);
-                //}
-
-                ////Return formatted string
-                //return String.Join(" ", words);
                 return Util.Capitalize(fileName);
             }
             return fileName;
@@ -33,7 +23,7 @@ namespace BulkRename {
 
         public static string CapitalizeKey(string fileName) {
             if (!String.IsNullOrEmpty(fileName)) {
-                string[] noCap = { "a", "an", "the", "and", "but", "or", "nor", "at", "by", "for", "from", "in", "into", "of", "off", "on", "up", "with", "to", "as", "o,Clock" };
+                string[] noCap = { "a", "an", "the", "and", "but", "or", "nor", "at", "by", "for", "from", "in", "into", "of", "on", "up", "with", "to", "as", "o,Clock" };
 
                 //Split name into individual words
                 string[] words = Util.SplitWords(fileName);
@@ -53,6 +43,7 @@ namespace BulkRename {
                             words[i] = Util.Capitalize(words[i]);
                         }
                     }
+                    return String.Join(" ", words);
                 }
             }
             return fileName;
