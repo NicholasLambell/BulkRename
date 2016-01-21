@@ -51,14 +51,10 @@ namespace BulkRename {
                     customFilters.Add(new string[] { cell0, cell1 });
                 }
             }
+            FilterList filterList = new FilterList(defaultFilters, customFilters);
 
-            //Set form tag to filter list container object
-            this.Tag = new FilterList(defaultFilters, customFilters);
-
-            //If both lists are empty set tag to null
-            if (defaultFilters.Count == 0 && customFilters.Count == 0) {
-                this.Tag = null;
-            }
+            //If both filter lists are empty return null otherwise return filter list container
+            this.Tag = (defaultFilters.Count == 0 && customFilters.Count == 0) ? null : filterList;
 
             //Set dialog result to return to main form
             this.DialogResult = DialogResult.OK;
